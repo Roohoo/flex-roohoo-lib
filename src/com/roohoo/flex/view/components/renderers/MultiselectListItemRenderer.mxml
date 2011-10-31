@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="true"
+				height="{ELEMENT_HEIGHT}"
+				creationComplete="initView(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import spark.components.List;
+			import spark.events.IndexChangeEvent;
+			
+			public static const ELEMENT_HEIGHT:Number = 23;
+			
+			private function initView(event:Event):void
+			{
+				(owner as List).addEventListener(IndexChangeEvent.CHANGE, cbx_test);
+			}
+			
+			private function cbx_test(event:Event):void
+			{
+				cbxData.selected = ((owner as List).selectedIndices.indexOf(itemIndex) >= 0);
+			}
+			
+			private function cbx_click(event:Event):void
+			{
+				event.preventDefault();
+				event.stopPropagation();
+				event.stopImmediatePropagation();
+			}
+			
+			private function cbx_change(event:Event):void
+			{
+				var dd:List = owner as List;
+				
+				if (cbxData.selected) {
+					dd.selectedIndices.push(itemIndex);
+					selected = true;
+				} else {
+					var excludeInd:int = itemIndex;
+					dd.selectedIndices = dd.selectedIndices.filter(
+						function (item:int, index:int, source:Vector.<int>):Boolean
+						{ return item != excludeInd; });
+					selected = false;
+				}
+				
+				dd.callLater(function ():void {
+					dd.dispatchEvent(new IndexChangeEvent(IndexChangeEvent.CHANGE));
+				});
+			}
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				if (data != null) {
+					cbxData.selected = selected;
+					lblData.text = data[(owner as List).labelField];
+				} else {
+					cbxData.selected = false;
+					lblData.text = null;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:HGroup width="100%" height="100%"
+			  paddingLeft="10"
+			  verticalAlign="middle" horizontalAlign="left">
+		<s:CheckBox id="cbxData"
+					enabled="true"
+					change="cbx_change(event)"
+					click="cbx_click(event)"
+					mouseDown="cbx_click(event)"
+					mouseUp="cbx_click(event)"/>
+		<s:Label id="lblData"/>
+	</s:HGroup>
+	
+</s:ItemRenderer>

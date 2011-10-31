@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="640" height="480"
+					   xmlns:comp="com.roohoo.flex.view.components.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			private var stateArray:Array = [
+				{ name: 'Arizona', code: 'AZ' },
+				{ name: 'California', code: 'CA' },
+				{ name: 'Indianapolis', code: 'IN' },
+				{ name: 'Illinois', code: 'IL' },
+				{ name: 'Newyork', code: 'NY' },
+				{ name: 'Ohio', code: 'OH' },
+				{ name: 'Pennsylvania', code: 'PA' },
+				{ name: 'Texas', code: 'TX' } ];
+			
+			[Bindable]
+			private var stateCollection:ArrayCollection = new ArrayCollection(stateArray);
+		]]>
+	</fx:Script>
+	
+	<s:Group width="464" height="227">
+		
+		<comp:MultiSelectBox x="79" y="42"
+							 dataProvider="{stateArray}"
+							 rawValue="{[ 'CA', 'IL' ]}"
+							 label="Provinces"
+							 labelField="name"
+							 dataField="code"/>
+		
+		<s:HGroup x="79" y="70">
+			<s:Label height="100%" text="test test" verticalAlign="middle"/>
+			<s:TextInput text="test"/>
+		</s:HGroup>
+		
+		<comp:IPv6AddressInput x="79" y="100"/>
+		
+	</s:Group>	
+	
+</s:WindowedApplication>
