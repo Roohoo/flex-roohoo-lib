@@ -1,5 +1,5 @@
 package com.roohoo.flex.view.components
-{
+{	
 	import com.roohoo.flex.view.components.renderers.MultiselectListItemRenderer;
 	
 	import flash.display.DisplayObject;
@@ -92,6 +92,9 @@ package com.roohoo.flex.view.components
 			_lblData.left = 0;
 			_lblData.editable = false;
 			_lblData.addEventListener(MouseEvent.CLICK, switchDD);
+			_lblData.setStyle("borderColor", "0x6c6c6c");
+			_lblData.setStyle("borderAlpha", 1.0);
+			_lblData.setStyle("cornerRadius", 1);
 			addElement(_lblData);
 			
 			_ddSwitcher = new Button();
@@ -102,6 +105,9 @@ package com.roohoo.flex.view.components
 			_ddSwitcher.bottom = 0;
 			_ddSwitcher.label = '';
 			_ddSwitcher.addEventListener(MouseEvent.CLICK, switchDD);
+			_ddSwitcher.setStyle("borderColor", "0x6c6c6c");
+			_ddSwitcher.setStyle("borderAlpha", 1.0);
+			_ddSwitcher.setStyle("cornerRadius", 1);
 			addElement(_ddSwitcher);
 			
 			_dd = new List();
@@ -168,7 +174,7 @@ package com.roohoo.flex.view.components
 		
 		private function applyRawValue():void
 		{
-			if (_ddInited && _rawValue != null) {
+			if (_ddInited) {
 				
 				var selectedIndices:Vector.<int> = new Vector.<int>();
 				
@@ -196,6 +202,8 @@ package com.roohoo.flex.view.components
 				}
 				
 				_dd.selectedIndices = selectedIndices;
+				
+				_dd.validateProperties();
 				
 				_dd.callLater(function ():void {
 					_dd.dispatchEvent(new IndexChangeEvent(IndexChangeEvent.CHANGE));
@@ -308,9 +316,11 @@ package com.roohoo.flex.view.components
 		
 		public function set rawValue(value:Array):void
 		{
-			_rawValue = value;
+			_rawValue = (value != null) ? value : [];
 			
 			applyRawValue();
+			
+			updateLabel();
 		}
 	}
 }
